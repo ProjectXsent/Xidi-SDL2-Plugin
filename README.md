@@ -41,5 +41,6 @@ Note that there is no INI section for this, it must be added before any INI sect
 To use SDL3, see [SDL2-Compat](https://github.com/libsdl-org/sdl2-compat) or use RibShark's [Xidi SDL3 Plugin](https://github.com/RibShark/Xidi-SDL3-Plugin).
 
 ## Credits
+- libsdl-org (SDL2/SDL2-Compat)
 - samuelgr (Xidi)
 - RibShark (Xidi-SDL3-Plugin)
