@@ -21,7 +21,7 @@ A full list of supported controllers can be found in the [SDL2 source code](http
 - [CMake](https://cmake.org)
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2022 and above or use Visual Studio Build Tools)
 - SDL2-devel-2.x.xx-VC (current repo is using v2.32.8)
-    - In case you want to update, download the latest `SDL3-devel-2.x.xx-VC.zip`, extract the folder to Xidi SDL2 Plugin repository and rename it to `SDL2`. This is for the `-DSDL2_DIR=".\SDL2\cmake"` in the .bat file.
+    - In case you want to update, download the latest `SDL2-devel-2.x.xx-VC.zip`, extract the folder to Xidi SDL2 Plugin repository and rename it to `SDL2`. This is for the `-DSDL2_DIR=".\SDL2\cmake"` in the .bat file.
 
 **On Windows (primary path):**
 - Run `build_x86_Release.bat` or `build_x64_Release.bat`.
