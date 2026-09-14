@@ -29,4 +29,4 @@ namespace XidiSDL2Plugin
     };
 }
 
-#endif //XIDI_SDL3_PLUGIN_SDL3BACKEND_H
+#endif //XIDI_SDL2_PLUGIN_SDL2BACKEND_H
