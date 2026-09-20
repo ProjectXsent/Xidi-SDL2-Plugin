@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <hidsdi.h>
 #include <cstring>
+#include <string>
 
 #include "SDL2Backend.h"
 
@@ -132,12 +133,41 @@ namespace XidiSDL2Plugin
         }
     }
 
+    /* Looks for a "gamecontrollerdb.txt" file in the same directory as the running
+        executable and, if present, loads any additional/updated gamepad mappings it
+        contains. This lets a game or its packager ship a custom or newer SDL gamepad
+        mapping database without needing an update to Xidi itself. Mappings from this file
+        take priority over SDL's built-in database for any GUID they redefine. Not
+        finding the file, or it failing to parse, is non-fatal - SDL simply keeps whatever
+        mappings it already knows about. Must run before controllers are opened so the
+        mappings are in effect when they are (SDL_GetBasePath returns the exe's directory, not
+        the current working directory, so this behaves consistently regardless of how the game
+        was launched). */
+    static void LoadGameControllerDatabaseIfPresent()
+    {
+        char* basePath = SDL_GetBasePath();
+        if (basePath == nullptr)
+            return; // couldn't determine the executable's directory (log when ability added)
+
+        const std::string dbPath = std::string(basePath) + "gamecontrollerdb.txt";
+        SDL_free(basePath);
+
+        // Returns the number of mappings added on success, or -1 if the file is missing or
+        // fails to parse; either way there is nothing else to do here (log when ability added).
+        SDL_GameControllerAddMappingsFromFile(dbPath.c_str());
+    }
+
     bool SDL2Backend::Initialize()
     {
         if (SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1") == SDL_FALSE)
             return false;
         if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) != 0)
             return false;
+        
+        /* Load any custom/updated gamepad mappings shipped alongside the game before
+           opening any gamepads, so the mappings are already in effect for devices found
+           during the initial scan. */
+        LoadGameControllerDatabaseIfPresent();
 
         /* Fill in whatever physical controller slots already have a gamepad connected.
            Anything that connects or disconnects afterward is picked up as a hotplug event
